@@ -8,7 +8,7 @@
     <style>
         body {
             font-family: 'Comic Sans MS', sans-serif;
-            background: linear-gradient(to bottom, #FFE4E1, #E7F6F2);
+            background: linear-gradient(to bottom, #FFE4E1, #B5FFFC);
             margin: 0;
             padding: 0;
             color: #FF6B81;
@@ -30,7 +30,6 @@
             background: white;
             border-radius: 15px;
             box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
-            position: relative;
         }
         .profile {
             text-align: center;
@@ -51,14 +50,14 @@
             margin: 10px 0 5px;
             color: #FF6B81;
         }
-        .task, .diary, .stats {
+        .task, .diary, .stats, .history {
             margin: 20px 0;
             padding: 15px;
             background: #FFF1E6;
             border: 2px solid #FFD1DC;
             border-radius: 10px;
         }
-        .task h3, .diary h3, .stats h3 {
+        .task h3, .diary h3, .stats h3, .history h3 {
             font-size: 20px;
             margin-bottom: 10px;
             color: #FF88AA;
@@ -79,13 +78,6 @@
             background: #FF6B81;
             transform: scale(1.1);
         }
-        .history {
-            margin-top: 20px;
-            padding: 10px;
-            background: #F9F9F9;
-            border-radius: 10px;
-            border: 1px solid #FF88AA;
-        }
         .history-item {
             margin-bottom: 15px;
             padding: 10px;
@@ -104,7 +96,6 @@
     <div class="header">🌸 幸福日記 🌸</div>
     <div class="container">
         <div class="profile">
-            <!-- 替換成馬卡龍風可愛小貓圖片 -->
             <img id="character" src="https://i.imgur.com/jxU4jdd.png" alt="可愛小貓">
             <h2>Yuette</h2>
             <p id="happiness">幸福值：300 🌟</p>
