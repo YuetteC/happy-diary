@@ -1,0 +1,92 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>幸福日記</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #FFEFF7;
+            text-align: center;
+            color: #FF6B81;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .button {
+            background: #FFAACF;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .button:hover {
+            background: #FF88AA;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🌸 幸福日記 🌸</h1>
+        <textarea id="diaryEntry" rows="4" cols="30" placeholder="寫下今天的幸福瞬間..."></textarea>
+        <br>
+        <button class="button" onclick="saveDiary()">儲存</button>
+        <button class="button" onclick="generateTask()">隨機任務</button>
+        <p id="randomTask"></p>
+        <button class="button" onclick="startTimer()">開始計時</button>
+        <p id="timer">25:00</p>
+    </div>
+
+    <script>
+        function saveDiary() {
+            let entry = document.getElementById('diaryEntry').value;
+            localStorage.setItem('diary', entry);
+            alert('日記已儲存！');
+        }
+
+        function generateTask() {
+            let tasks = [
+                '發一條感謝訊息給朋友',
+                '寫下三件讓你開心的小事',
+                '深呼吸10次，感受當下',
+                '給自己一個微笑',
+                '觀察今天最美的事物'
+            ];
+            let randomIndex = Math.floor(Math.random() * tasks.length);
+            document.getElementById('randomTask').innerText = "今日任務: " + tasks[randomIndex];
+        }
+
+        let time = 1500; // 25分鐘
+        let timerInterval;
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                let minutes = Math.floor(time / 60);
+                let seconds = time % 60;
+                document.getElementById('timer').innerText = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                if (time === 0) {
+                    clearInterval(timerInterval);
+                    alert('時間到！記得休息一下');
+                } else {
+                    time--;
+                }
+            }, 1000);
+        }
+    </script>
+
+</body>
+</html>
