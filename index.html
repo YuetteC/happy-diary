@@ -8,7 +8,7 @@
     <style>
         body {
             font-family: 'Comic Sans MS', sans-serif;
-            background: linear-gradient(to bottom, #FFE4E1, #FFF1E6);
+            background: linear-gradient(to bottom, #FFE4E1, #E7F6F2);
             margin: 0;
             padding: 0;
             color: #FF6B81;
@@ -18,9 +18,10 @@
             padding: 20px;
             background: #FF88AA;
             color: white;
-            font-size: 24px;
+            font-size: 28px;
             font-weight: bold;
             border-bottom: 5px solid #FFD1DC;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
         }
         .container {
             max-width: 800px;
@@ -35,10 +36,14 @@
             margin-bottom: 20px;
         }
         .profile img {
-            width: 100px;
-            height: 100px;
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
             border: 3px solid #FF88AA;
+            transition: transform 0.3s ease;
+        }
+        .profile img:hover {
+            transform: scale(1.1);
         }
         .profile h2 {
             margin: 10px 0 5px;
@@ -72,11 +77,20 @@
             background: #FF6B81;
             transform: scale(1.1);
         }
-        .stats {
-            text-align: center;
+        .history {
+            margin-top: 20px;
+            padding: 10px;
+            background: #F9F9F9;
+            border-radius: 10px;
+            border: 1px solid #FF88AA;
         }
-        .diary-category {
-            margin-top: 10px;
+        .history-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #E7F6F2;
+            border-radius: 10px;
+            border: 1px solid #B2DFDC;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
@@ -84,8 +98,9 @@
     <div class="header">🌸 幸福日記 🌸</div>
     <div class="container">
         <div class="profile">
-            <img id="character" src="https://i.imgur.com/Ah3n8A4.png" alt="Yuette">
-            <h2 id="name">Yuette</h2>
+            <!-- 替換成可愛小貓圖片 -->
+            <img id="character" src="https://i.imgur.com/jxU4jdd.png" alt="可愛小貓">
+            <h2>Yuette</h2>
             <p id="happiness">幸福值：300 🌟</p>
         </div>
         <div class="stats">
@@ -102,16 +117,10 @@
         <div class="diary">
             <h3>幸福日記</h3>
             <textarea id="diaryEntry" rows="4" cols="50" placeholder="寫下今天的幸福瞬間..."></textarea>
-            <div class="diary-category">
-                <label for="category">分類：</label>
-                <select id="category">
-                    <option value="幸福瞬間">幸福瞬間</option>
-                    <option value="學習成長">學習成長</option>
-                    <option value="情感記錄">情感記錄</option>
-                </select>
-            </div>
             <br>
             <button class="button" onclick="saveDiary()">儲存日記</button>
+            <button class="button" onclick="viewDiary()">查看過往日記</button>
+            <div id="diaryHistory" class="history"></div>
         </div>
     </div>
 
@@ -120,19 +129,34 @@
 
         function saveDiary() {
             let entry = document.getElementById('diaryEntry').value;
-            let category = document.getElementById('category').value;
             if (entry.trim() === "") {
                 alert("請先輸入日記內容！");
                 return;
             }
             let history = JSON.parse(localStorage.getItem('diaryHistory')) || [];
-            history.push({ date: new Date().toLocaleString(), content: entry, category: category });
+            history.push({ date: new Date().toLocaleString(), content: entry });
             localStorage.setItem('diaryHistory', JSON.stringify(history));
             updateStats();
             happiness += 10;
             updateHappiness();
             alert('日記已儲存！保持幸福哦～');
             document.getElementById('diaryEntry').value = "";
+        }
+
+        function viewDiary() {
+            let history = JSON.parse(localStorage.getItem('diaryHistory')) || [];
+            let diaryHistory = document.getElementById('diaryHistory');
+            diaryHistory.innerHTML = "";
+            if (history.length === 0) {
+                diaryHistory.innerHTML = "<p>目前還沒有日記記錄。</p>";
+                return;
+            }
+            history.forEach(entry => {
+                let diaryItem = document.createElement("div");
+                diaryItem.className = "history-item";
+                diaryItem.innerHTML = `<strong>${entry.date}</strong><br>${entry.content}`;
+                diaryHistory.appendChild(diaryItem);
+            });
         }
 
         function generateTask() {
@@ -156,9 +180,9 @@
             document.getElementById('happiness').innerText = `幸福值：${happiness} 🌟`;
             let characterImg = document.getElementById('character');
             if (happiness >= 500) {
-                characterImg.src = "https://i.imgur.com/RQPdDdR.png"; // 開心表情
+                characterImg.src = "https://i.imgur.com/smwAUYO.png"; // 開心小貓
             } else {
-                characterImg.src = "https://i.imgur.com/Ah3n8A4.png"; // 普通表情
+                characterImg.src = "https://i.imgur.com/jxU4jdd.png"; // 普通小貓
             }
         }
 
