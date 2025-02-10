@@ -44,21 +44,17 @@
             margin: 10px 0 5px;
             color: #FF6B81;
         }
-        .task, .diary {
+        .task, .diary, .stats {
             margin: 20px 0;
             padding: 15px;
             background: #FFF1E6;
             border: 2px solid #FFD1DC;
             border-radius: 10px;
         }
-        .task h3, .diary h3 {
+        .task h3, .diary h3, .stats h3 {
             font-size: 20px;
             margin-bottom: 10px;
             color: #FF88AA;
-        }
-        .task p, .diary p {
-            font-size: 16px;
-            color: #444;
         }
         .button {
             display: inline-block;
@@ -76,8 +72,11 @@
             background: #FF6B81;
             transform: scale(1.1);
         }
-        .history {
-            margin-top: 20px;
+        .stats {
+            text-align: center;
+        }
+        .diary-category {
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -85,10 +84,15 @@
     <div class="header">🌸 幸福日記 🌸</div>
     <div class="container">
         <div class="profile">
-            <!-- 替換成實際圖片 URL -->
-            <img src="https://i.imgur.com/Ah3n8A4.png" alt="Yuette">
-            <h2>Yuette</h2>
-            <p>幸福值：300 🌟</p>
+            <img id="character" src="https://i.imgur.com/Ah3n8A4.png" alt="Yuette">
+            <h2 id="name">Yuette</h2>
+            <p id="happiness">幸福值：300 🌟</p>
+        </div>
+        <div class="stats">
+            <h3>網站數據</h3>
+            <p id="diaryCount">已記錄日記數量：0</p>
+            <p id="lastCheckIn">最後簽到日期：未簽到</p>
+            <button class="button" onclick="checkIn()">每日簽到</button>
         </div>
         <div class="task">
             <h3>今日幸福任務</h3>
@@ -98,41 +102,37 @@
         <div class="diary">
             <h3>幸福日記</h3>
             <textarea id="diaryEntry" rows="4" cols="50" placeholder="寫下今天的幸福瞬間..."></textarea>
+            <div class="diary-category">
+                <label for="category">分類：</label>
+                <select id="category">
+                    <option value="幸福瞬間">幸福瞬間</option>
+                    <option value="學習成長">學習成長</option>
+                    <option value="情感記錄">情感記錄</option>
+                </select>
+            </div>
             <br>
             <button class="button" onclick="saveDiary()">儲存日記</button>
-            <button class="button" onclick="viewDiary()">查看日記</button>
-            <div id="diaryHistory" class="history"></div>
         </div>
     </div>
 
     <script>
+        let happiness = 300;
+
         function saveDiary() {
             let entry = document.getElementById('diaryEntry').value;
+            let category = document.getElementById('category').value;
             if (entry.trim() === "") {
                 alert("請先輸入日記內容！");
                 return;
             }
             let history = JSON.parse(localStorage.getItem('diaryHistory')) || [];
-            history.push({ date: new Date().toLocaleString(), content: entry });
+            history.push({ date: new Date().toLocaleString(), content: entry, category: category });
             localStorage.setItem('diaryHistory', JSON.stringify(history));
+            updateStats();
+            happiness += 10;
+            updateHappiness();
             alert('日記已儲存！保持幸福哦～');
             document.getElementById('diaryEntry').value = "";
-        }
-
-        function viewDiary() {
-            let history = JSON.parse(localStorage.getItem('diaryHistory')) || [];
-            let diaryHistory = document.getElementById('diaryHistory');
-            diaryHistory.innerHTML = "";
-            if (history.length === 0) {
-                diaryHistory.innerHTML = "<p>目前還沒有日記記錄。</p>";
-                return;
-            }
-            history.forEach(entry => {
-                let diaryItem = document.createElement("div");
-                diaryItem.style.marginBottom = "10px";
-                diaryItem.innerHTML = `<strong>${entry.date}</strong><br>${entry.content}`;
-                diaryHistory.appendChild(diaryItem);
-            });
         }
 
         function generateTask() {
@@ -146,6 +146,41 @@
             let randomIndex = Math.floor(Math.random() * tasks.length);
             document.getElementById('randomTask').innerText = tasks[randomIndex];
         }
+
+        function updateStats() {
+            let history = JSON.parse(localStorage.getItem('diaryHistory')) || [];
+            document.getElementById('diaryCount').innerText = `已記錄日記數量：${history.length}`;
+        }
+
+        function updateHappiness() {
+            document.getElementById('happiness').innerText = `幸福值：${happiness} 🌟`;
+            let characterImg = document.getElementById('character');
+            if (happiness >= 500) {
+                characterImg.src = "https://i.imgur.com/RQPdDdR.png"; // 開心表情
+            } else {
+                characterImg.src = "https://i.imgur.com/Ah3n8A4.png"; // 普通表情
+            }
+        }
+
+        function checkIn() {
+            let today = new Date().toLocaleDateString();
+            let lastCheckIn = localStorage.getItem('lastCheckIn');
+            if (lastCheckIn === today) {
+                alert("今天已經簽到過了！");
+                return;
+            }
+            localStorage.setItem('lastCheckIn', today);
+            happiness += 20;
+            updateHappiness();
+            updateStats();
+            document.getElementById('lastCheckIn').innerText = `最後簽到日期：${today}`;
+            alert("簽到成功！獲得幸福值+20 🌟");
+        }
+
+        // 初始化數據
+        updateStats();
+        updateHappiness();
+        document.getElementById('lastCheckIn').innerText = `最後簽到日期：${localStorage.getItem('lastCheckIn') || "未簽到"}`;
     </script>
 </body>
 </html>
