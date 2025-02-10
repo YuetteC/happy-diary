@@ -16,7 +16,7 @@
         .header {
             text-align: center;
             padding: 20px;
-            background: #FF88AA;
+            background: linear-gradient(to right, #FF88AA, #FFD1DC);
             color: white;
             font-size: 28px;
             font-weight: bold;
@@ -30,6 +30,7 @@
             background: white;
             border-radius: 15px;
             box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+            position: relative;
         }
         .profile {
             text-align: center;
@@ -40,6 +41,7 @@
             height: 120px;
             border-radius: 50%;
             border: 3px solid #FF88AA;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s ease;
         }
         .profile img:hover {
@@ -87,10 +89,14 @@
         .history-item {
             margin-bottom: 15px;
             padding: 10px;
-            background: #E7F6F2;
+            background: #FFEFD5;
             border-radius: 10px;
-            border: 1px solid #B2DFDC;
+            border: 1px solid #FFD1DC;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        .history-item:hover {
+            transform: scale(1.05);
         }
     </style>
 </head>
@@ -98,7 +104,7 @@
     <div class="header">🌸 幸福日記 🌸</div>
     <div class="container">
         <div class="profile">
-            <!-- 替換成可愛小貓圖片 -->
+            <!-- 替換成馬卡龍風可愛小貓圖片 -->
             <img id="character" src="https://i.imgur.com/jxU4jdd.png" alt="可愛小貓">
             <h2>Yuette</h2>
             <p id="happiness">幸福值：300 🌟</p>
