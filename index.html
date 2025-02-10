@@ -8,123 +8,115 @@
     <style>
         body {
             font-family: 'Comic Sans MS', sans-serif;
-            background: linear-gradient(to bottom, #FFD1DC, #FFEBE5);
-            text-align: center;
-            color: #FF6B81;
+            background: linear-gradient(to bottom, #FFE4E1, #FFF1E6);
             margin: 0;
             padding: 0;
+            color: #FF6B81;
+        }
+        .header {
+            text-align: center;
+            padding: 20px;
+            background: #FF88AA;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            border-bottom: 5px solid #FFD1DC;
         }
         .container {
-            max-width: 400px;
-            margin: 50px auto;
+            max-width: 800px;
+            margin: 30px auto;
             padding: 20px;
             background: white;
             border-radius: 15px;
-            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
-            position: relative;
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
         }
-        h1 {
-            font-size: 28px;
+        .profile {
+            text-align: center;
             margin-bottom: 20px;
-            color: #FF6B81;
-            position: relative;
         }
-        h1::after {
-            content: "🌸";
-            position: absolute;
-            top: 0;
-            right: -20px;
-        }
-        textarea {
-            width: 90%;
+        .profile img {
+            width: 100px;
             height: 100px;
-            padding: 10px;
+            border-radius: 50%;
+            border: 3px solid #FF88AA;
+        }
+        .profile h2 {
+            margin: 10px 0 5px;
+            color: #FF6B81;
+        }
+        .task, .diary {
+            margin: 20px 0;
+            padding: 15px;
+            background: #FFF1E6;
             border: 2px solid #FFD1DC;
             border-radius: 10px;
-            resize: none;
+        }
+        .task h3, .diary h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #FF88AA;
+        }
+        .task p, .diary p {
+            font-size: 16px;
+            color: #444;
         }
         .button {
-            display: block;
-            width: 80%;
-            margin: 10px auto;
-            padding: 10px 20px;
-            font-size: 16px;
-            color: white;
+            display: inline-block;
             background: #FF88AA;
-            border: none;
-            border-radius: 20px;
+            color: white;
+            font-size: 16px;
+            padding: 10px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            margin-top: 10px;
             cursor: pointer;
-            transition: all 0.3s ease-in-out;
+            transition: transform 0.2s, background-color 0.3s;
         }
         .button:hover {
             background: #FF6B81;
-            transform: scale(1.05);
-        }
-        #randomTask, #timer {
-            margin-top: 20px;
-            font-size: 18px;
-            color: #FF88AA;
-        }
-        footer {
-            margin-top: 30px;
-            font-size: 12px;
-            color: #999;
+            transform: scale(1.1);
         }
     </style>
 </head>
 <body>
-
+    <div class="header">🌸 幸福日記 🌸</div>
     <div class="container">
-        <h1>幸福日記</h1>
-        <textarea id="diaryEntry" placeholder="寫下今天的幸福瞬間..."></textarea>
-        <button class="button" onclick="saveDiary()">儲存</button>
-        <button class="button" onclick="generateTask()">隨機任務</button>
-        <p id="randomTask"></p>
-        <button class="button" onclick="startTimer()">開始計時</button>
-        <p id="timer">25:00</p>
+        <div class="profile">
+            <img src="https://via.placeholder.com/100" alt="角色圖片">
+            <h2>角色名稱：小幸運</h2>
+            <p>幸福值：300 🌟</p>
+        </div>
+        <div class="task">
+            <h3>今日幸福任務</h3>
+            <p id="randomTask">點擊下方按鈕生成任務！</p>
+            <button class="button" onclick="generateTask()">生成任務</button>
+        </div>
+        <div class="diary">
+            <h3>幸福日記</h3>
+            <textarea id="diaryEntry" rows="4" cols="50" placeholder="寫下今天的幸福瞬間..."></textarea>
+            <br>
+            <button class="button" onclick="saveDiary()">儲存日記</button>
+        </div>
     </div>
-
-    <footer>
-        © 2025 幸福日記 · 設計 by YuetteC
-    </footer>
 
     <script>
         function saveDiary() {
             let entry = document.getElementById('diaryEntry').value;
             localStorage.setItem('diary', entry);
-            alert('日記已儲存！記得常常回來看看哦～');
+            alert('日記已儲存！保持幸福哦～');
         }
 
         function generateTask() {
             let tasks = [
+                '觀察今天的天空，寫下三件你喜歡的事物 🌈',
                 '發一條感謝訊息給朋友 🌟',
-                '寫下三件讓你開心的小事 ✨',
-                '深呼吸10次，感受當下 🌈',
-                '給自己一個微笑 😊',
-                '觀察今天最美的事物 🌸'
+                '微笑對待每個人 😊',
+                '記錄三個讓你感到幸福的瞬間 ✨',
+                '嘗試學習一件新技能 🔧'
             ];
             let randomIndex = Math.floor(Math.random() * tasks.length);
-            document.getElementById('randomTask').innerText = "今日任務: " + tasks[randomIndex];
-        }
-
-        let time = 1500; // 25分鐘
-        let timerInterval;
-
-        function startTimer() {
-            clearInterval(timerInterval);
-            timerInterval = setInterval(() => {
-                let minutes = Math.floor(time / 60);
-                let seconds = time % 60;
-                document.getElementById('timer').innerText = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-                if (time === 0) {
-                    clearInterval(timerInterval);
-                    alert('時間到！記得休息一下，繼續幸福的一天～');
-                } else {
-                    time--;
-                }
-            }, 1000);
+            document.getElementById('randomTask').innerText = tasks[randomIndex];
         }
     </script>
-
 </body>
 </html>
