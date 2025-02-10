@@ -76,14 +76,17 @@
             background: #FF6B81;
             transform: scale(1.1);
         }
+        .history {
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
     <div class="header">🌸 幸福日記 🌸</div>
     <div class="container">
         <div class="profile">
-            <img src="https://via.placeholder.com/100" alt="角色圖片">
-            <h2>角色名稱：小幸運</h2>
+            <img src="https://via.placeholder.com/100" alt="Yuette">
+            <h2>角色名稱：Yuette</h2>
             <p>幸福值：300 🌟</p>
         </div>
         <div class="task">
@@ -96,14 +99,39 @@
             <textarea id="diaryEntry" rows="4" cols="50" placeholder="寫下今天的幸福瞬間..."></textarea>
             <br>
             <button class="button" onclick="saveDiary()">儲存日記</button>
+            <button class="button" onclick="viewDiary()">查看日記</button>
+            <div id="diaryHistory" class="history"></div>
         </div>
     </div>
 
     <script>
         function saveDiary() {
             let entry = document.getElementById('diaryEntry').value;
-            localStorage.setItem('diary', entry);
+            if (entry.trim() === "") {
+                alert("請先輸入日記內容！");
+                return;
+            }
+            let history = JSON.parse(localStorage.getItem('diaryHistory')) || [];
+            history.push({ date: new Date().toLocaleString(), content: entry });
+            localStorage.setItem('diaryHistory', JSON.stringify(history));
             alert('日記已儲存！保持幸福哦～');
+            document.getElementById('diaryEntry').value = "";
+        }
+
+        function viewDiary() {
+            let history = JSON.parse(localStorage.getItem('diaryHistory')) || [];
+            let diaryHistory = document.getElementById('diaryHistory');
+            diaryHistory.innerHTML = "";
+            if (history.length === 0) {
+                diaryHistory.innerHTML = "<p>目前還沒有日記記錄。</p>";
+                return;
+            }
+            history.forEach(entry => {
+                let diaryItem = document.createElement("div");
+                diaryItem.style.marginBottom = "10px";
+                diaryItem.innerHTML = `<strong>${entry.date}</strong><br>${entry.content}`;
+                diaryHistory.appendChild(diaryItem);
+            });
         }
 
         function generateTask() {
