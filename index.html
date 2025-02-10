@@ -8,7 +8,7 @@
     <style>
         body {
             font-family: 'Comic Sans MS', sans-serif;
-            background: linear-gradient(to bottom, #FFE4E1, #B5FFFC);
+            background: linear-gradient(to bottom, #FFE4E1, #DFFFD6);
             margin: 0;
             padding: 0;
             color: #FF6B81;
@@ -56,11 +56,10 @@
             background: #FFF1E6;
             border: 2px solid #FFD1DC;
             border-radius: 10px;
+            transition: box-shadow 0.3s ease;
         }
-        .task h3, .diary h3, .stats h3, .history h3 {
-            font-size: 20px;
-            margin-bottom: 10px;
-            color: #FF88AA;
+        .task:hover, .diary:hover, .stats:hover {
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
         }
         .button {
             display: inline-block;
@@ -96,7 +95,7 @@
     <div class="header">🌸 幸福日記 🌸</div>
     <div class="container">
         <div class="profile">
-            <img id="character" src="https://i.imgur.com/jxU4jdd.png" alt="可愛小貓">
+            <img id="character" src="https://placekitten.com/120/120" alt="可愛小貓">
             <h2>Yuette</h2>
             <p id="happiness">幸福值：300 🌟</p>
         </div>
@@ -177,9 +176,9 @@
             document.getElementById('happiness').innerText = `幸福值：${happiness} 🌟`;
             let characterImg = document.getElementById('character');
             if (happiness >= 500) {
-                characterImg.src = "https://i.imgur.com/smwAUYO.png"; // 開心小貓
+                characterImg.src = "https://placekitten.com/140/140"; // 開心小貓
             } else {
-                characterImg.src = "https://i.imgur.com/jxU4jdd.png"; // 普通小貓
+                characterImg.src = "https://placekitten.com/120/120"; // 普通小貓
             }
         }
 
